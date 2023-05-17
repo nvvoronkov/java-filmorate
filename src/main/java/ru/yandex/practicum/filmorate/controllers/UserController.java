@@ -28,8 +28,8 @@ import ru.yandex.practicum.filmorate.model.User;
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserController {
-    static int userId = 0;
-    final Map<Integer, User> userMap = new HashMap<>();
+    private static int userId = 0;
+    private final Map<Integer, User> userMap = new HashMap<>();
 
     public Integer generateId() {
         return ++userId;

@@ -25,8 +25,8 @@ import ru.yandex.practicum.filmorate.model.Film;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class FilmController {
     static final LocalDate START_DATE = LocalDate.of(1985, 12, 28);
-    final Map<Integer, Film> filmMap = new HashMap<>();
-    int filmId = 0;
+    private final Map<Integer, Film> filmMap = new HashMap<>();
+    private int filmId = 0;
 
     public Integer generateId() {
         return ++filmId;
