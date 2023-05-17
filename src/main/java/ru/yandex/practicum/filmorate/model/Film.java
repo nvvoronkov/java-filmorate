@@ -16,7 +16,7 @@ import javax.validation.constraints.Size;
 @Data
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@FieldDefaults(level = AccessLevel.PROTECTED)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Film {
     int id;
     @NotBlank

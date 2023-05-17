@@ -16,7 +16,7 @@ import javax.validation.constraints.Past;
 @Data
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@FieldDefaults(level = AccessLevel.PROTECTED)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class User {
     int id;
     @Email
