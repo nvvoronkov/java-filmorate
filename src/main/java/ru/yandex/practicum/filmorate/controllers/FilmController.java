@@ -13,11 +13,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.validator.FilmValidation;
 
 @RestController
 @Slf4j
@@ -33,22 +36,24 @@ public class FilmController {
     }
 
     @PostMapping
-    public Film addFilm(@RequestBody Film newFilm) {
+    public Film addFilm(@RequestBody Film newFilm) throws JsonProcessingException {
         for (Film entry : filmMap.values()) {
-            if (entry.getName().equals(newFilm.getName()) && isValidDate(newFilm)) {
+            if (entry.getName().equals(newFilm.getName())) {
                 throw new ValidationException("Фильм уже есть в нашей базе");
             }
         }
-        newFilm.setId(generateId());
-        filmMap.put(newFilm.getId(), newFilm);
-        log.trace("Добавален новый фильм {}", newFilm);
+        if (FilmValidation.isFilmValid(newFilm)) {
+            newFilm.setId(generateId());
+            filmMap.put(newFilm.getId(), newFilm);
+            log.trace("Добавален новый фильм {}", newFilm);
+        }
         return newFilm;
     }
 
     @PutMapping
-    public Film updateFilm(@RequestBody Film film) {
+    public Film updateFilm(@RequestBody Film film) throws JsonProcessingException {
         int id = film.getId();
-        if (filmMap.containsKey(id) && isValidDate(film)) {
+        if (filmMap.containsKey(id) && FilmValidation.isFilmValid(film)) {
             filmMap.put(id, film);
             log.trace("Обновлен фильм: {}", film);
             return film;
@@ -59,19 +64,8 @@ public class FilmController {
 
     @GetMapping
     public List<Film> getAllFilms() {
+        log.debug("Текущее количество фильмов: {}", filmMap.size());
         return new ArrayList<>(filmMap.values());
     }
 
-    private boolean isValidDate(Film film) {
-        if (film.getReleaseDate().isBefore(START_DATE)) {
-            log.warn(film.getReleaseDate().toString());
-            throw new ValidationException("Дата выхода фильма не может быть раньше " + START_DATE);
-        }
-        for (Film valueComparison : filmMap.values()) {
-            if (valueComparison.getName().equals(film.getName())) {
-                throw new ValidationException("Фильм уже есть в нашей базе");
-            }
-        }
-        return true;
-    }
 }

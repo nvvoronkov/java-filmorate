@@ -3,8 +3,6 @@ package ru.yandex.practicum.filmorate.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import ru.yandex.practicum.filmorate.validator.MinDateRelease;
-
 import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 import javax.validation.constraints.NotBlank;
@@ -27,7 +25,6 @@ public class Film {
     @NotNull
     @JsonFormat(pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @MinDateRelease
     @Past(message = "Неверная дате выхода фильма")
     LocalDate releaseDate;
     @NotNull
