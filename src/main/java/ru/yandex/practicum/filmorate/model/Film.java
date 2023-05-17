@@ -28,7 +28,7 @@ public class Film {
     @JsonFormat(pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @MinDateRelease
-    @Past(message = "Не выерная дате выхода фильма")
+    @Past(message = "Неверная дате выхода фильма")
     LocalDate releaseDate;
     @NotNull
     @Positive

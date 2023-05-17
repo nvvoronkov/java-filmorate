@@ -25,7 +25,7 @@ public class User {
     @NotBlank
     String login;
     String name;
-    @Past(message = "Не верная дата рождения")
+    @Past(message = "Неверная дата рождения")
     @JsonFormat(pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     LocalDate birthday;
