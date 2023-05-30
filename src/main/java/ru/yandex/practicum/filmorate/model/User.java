@@ -13,7 +13,6 @@ import java.util.Set;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Past;
 
 @Data
 @AllArgsConstructor
@@ -28,8 +27,6 @@ public class User {
     @NotBlank(message = "Не указан login")
     String login;
     String name;
-    @NotBlank(message = "Не указана дата рождения")
-    @Past(message = "Неверная дата рождения")
     @JsonFormat(pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     LocalDate birthday;

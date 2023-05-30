@@ -20,10 +20,10 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class FilmService {
+    @Autowired
     public final InMemoryFilmStorage filmStorage;
     public final InMemoryUserStorage userStorage;
 
-    @Autowired
     public FilmService(InMemoryFilmStorage filmStorage, InMemoryUserStorage userStorage) {
         this.filmStorage = filmStorage;
         this.userStorage = userStorage;

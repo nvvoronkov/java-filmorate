@@ -27,9 +27,9 @@ import ru.yandex.practicum.filmorate.service.UserService;
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserController {
+    @Autowired
     final UserService userService;
 
-    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }

@@ -30,9 +30,9 @@ import ru.yandex.practicum.filmorate.service.FilmService;
 @RequestMapping("/films")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class FilmController {
+    @Autowired
     final FilmService filmService;
 
-    @Autowired
     public FilmController(FilmService filmService) {
         this.filmService = filmService;
     }
