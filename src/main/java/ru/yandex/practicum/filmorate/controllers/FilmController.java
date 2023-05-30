@@ -49,7 +49,7 @@ public class FilmController {
         return filmService.updateFilm(film);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public Film getFilmById(@PathVariable("id") int filmId) {
         log.info("Получен запрос на получение фильма id={}", filmId);
         return filmService.getFilmById(filmId);
@@ -61,19 +61,19 @@ public class FilmController {
         return filmService.getListOfFilms();
     }
 
-    @PutMapping("{id}/like/{userId}")
+    @PutMapping("/{id}/like/{userId}")
     public void addLike(@PathVariable("id") int filmId, @PathVariable int userId) {
         log.info("Получен запрос на добавление лайка фильму id={} от пользователя id={}", filmId, userId);
         filmService.addLike(filmId, userId);
     }
 
-    @DeleteMapping("{id}/like/{userId}")
+    @DeleteMapping("/{id}/like/{userId}")
     public void deleteLike(@PathVariable("id") int filmId, @PathVariable int userId) {
         log.info("Получен запрос на удаление лайка фильму id={} от пользователя id={}", filmId, userId);
         filmService.deleteLike(filmId, userId);
     }
 
-    @GetMapping("popular")
+    @GetMapping("/popular")
     public List<Film> getPopularFilms(@RequestParam(defaultValue = "10") 
                                     @Positive(message = "Количество фиильмов в списке должно быть положительным")
                                     int count) {
@@ -81,7 +81,7 @@ public class FilmController {
         return filmService.getPopularFilms(count);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public void deleteFilm(@PathVariable("id") int filmId) {
         log.info("Получен запрос на удаление фильмf id={}", filmId);
         filmService.deleteFilm(filmId);

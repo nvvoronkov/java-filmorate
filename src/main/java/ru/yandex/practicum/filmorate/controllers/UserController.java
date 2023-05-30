@@ -52,33 +52,33 @@ public class UserController {
         return userService.getListOfUsers();
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public User getUserById(@PathVariable("id") int userId) {
         log.info("Получен запрос на получение пользователя id={}", userId);
         return userService.getUserById(userId);
     }
 
-    @PutMapping("{id}/friends/{friendId}")
+    @PutMapping("/{id}/friends/{friendId}")
     public void addFriend(@PathVariable("id") int userId, @PathVariable int friendId) {
         log.info("Получен запрос на добавление польхователя id={} в друзья пользователю id={}", friendId, userId);
         userService.addNewFriend(userId, friendId);
     }
 
-    @DeleteMapping("{id}/friends/{friendId}")
+    @DeleteMapping("/{id}/friends/{friendId}")
     public void deleteFriend(@PathVariable("id") int userId, @PathVariable("friendId") int friendId) {
         log.info("Получен запрос на удаление польхователя id={} из друзей пользователя id={}", 
                 friendId, userId);
         userService.deleteFriend(userId, friendId);
     }
 
-    @GetMapping("{id}/friends")
+    @GetMapping("/{id}/friends")
     @ResponseBody
     public List<User> getListOfFriends(@PathVariable("id") int userId) {
         log.info("Получен запрос на получения списка друзей пользователя id={}", userId);
         return userService.getListOfFriends(userId);
     }
 
-    @GetMapping("{id}/friends/common/{otherId}")
+    @GetMapping("/{id}/friends/common/{otherId}")
     List<User> getListOfCommonFriends(@PathVariable("id") int userId, @PathVariable("otherId") int friendId) {
         log.info("Получен запрос на получение общего списка друзей пользователей id={} и id={}", 
                 userId, friendId);
