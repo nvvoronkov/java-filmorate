@@ -3,16 +3,16 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
+import ru.yandex.practicum.filmorate.validator.UserValidation;
 
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,12 +20,10 @@ import java.util.List;
 @Service
 public class UserService {
     private final UserStorage userStorage;
-    private final DateTimeFormatter dateTimeFormatter;
 
     @Autowired
-    public UserService(InMemoryUserStorage userStorage) {
+    public UserService(UserStorage userStorage) {
         this.userStorage = userStorage;
-        dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     }
 
     public List<User> getListOfUsers() {
@@ -33,7 +31,7 @@ public class UserService {
     }
 
     public User getUserById(int userId) {
-        if (InMemoryUserStorage.isUserInStorage(userId)) {
+        if (userStorage.isUserInStorage(userId)) {
             return userStorage.getUserById(userId);
         } else {
             log.info("Пользователь id={} не найден", userId);
@@ -41,8 +39,8 @@ public class UserService {
         }
     }
 
-    public User addNewUser(User user) throws JsonProcessingException {
-        if (InMemoryUserStorage.isUserValid(user)) {
+    public User addNewUser(User user) throws JsonProcessingException  {
+        if (UserValidation.isUserValid(user)) {
             return userStorage.addNewUser(user);
         } else
             return null;
@@ -50,7 +48,7 @@ public class UserService {
 
     public User updateUser(User updatedUser) throws JsonProcessingException {
         if (userStorage.isUserInStorage(updatedUser)) {
-            if (InMemoryUserStorage.isUserValid(updatedUser)) {
+            if (UserValidation.isUserValid(updatedUser)) {
                 return userStorage.updateUser(updatedUser);
             } else
                 return null;

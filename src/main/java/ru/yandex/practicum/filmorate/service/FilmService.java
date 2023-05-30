@@ -1,6 +1,8 @@
 package ru.yandex.practicum.filmorate.service;
 
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -10,6 +12,8 @@ import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
 import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
+import ru.yandex.practicum.filmorate.validator.FilmValidation;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,6 +23,7 @@ public class FilmService {
     public final InMemoryFilmStorage filmStorage;
     public final InMemoryUserStorage userStorage;
 
+    @Autowired
     public FilmService(InMemoryFilmStorage filmStorage, InMemoryUserStorage userStorage) {
         this.filmStorage = filmStorage;
         this.userStorage = userStorage;
@@ -38,16 +43,16 @@ public class FilmService {
     }
 
     public Film addNewFilm(Film newFilm) throws JsonProcessingException {
-        if (InMemoryFilmStorage.isFilmValid(newFilm)) {
+        if (FilmValidation.isFilmValid(newFilm)) {
             return filmStorage.addNewFilm(newFilm);
         } else {
             return null;
         }
     }
 
-    public Film updateFilm(Film updatedFilm) {
-        if (filmStorage.isFilmInStorage(updatedFilm)) {
-            if (filmStorage.isFilmInStorage(updatedFilm)) {
+    public Film updateFilm(Film updatedFilm) throws JsonProcessingException {
+        if (filmStorage.isFilmInStorage(updatedFilm) && FilmValidation.isFilmValid(updatedFilm)) {
+            if (filmStorage.isFilmInStorage(updatedFilm.getId())) {
                 return filmStorage.updateFilm(updatedFilm);
             } else {
                 return null;

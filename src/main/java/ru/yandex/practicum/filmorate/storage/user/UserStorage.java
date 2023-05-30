@@ -20,4 +20,10 @@ public interface UserStorage {
     void addNewFriend(int userId, int friendId);
 
     void deleteFriend(int userId, int friendId);
+
+    boolean isUserInStorage(User user);
+
+    boolean isUserInStorage(int userId);
+
+    boolean areTheseUsersFriends(Integer userId, Integer friendId);
 }

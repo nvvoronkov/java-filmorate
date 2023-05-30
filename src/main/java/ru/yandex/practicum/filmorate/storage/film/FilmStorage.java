@@ -18,4 +18,10 @@ public interface FilmStorage {
     Film getFilmById(int filmId);
 
     void addLike (int filmId, int userId);
+
+    boolean isFilmInStorage(int filmId);
+
+    boolean isFilmInStorage(Film film);
+
+    boolean isFilmHasLikeFromUser(int filmId, int userId);
 }
