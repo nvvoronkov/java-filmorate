@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.controllers;
 
 import java.util.List;
 import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +35,7 @@ public class UserController {
     }
 
     @PostMapping
-    private User addNewUser(@Valid @RequestBody User user, @PathVariable int userId) throws JsonProcessingException {
+    private User addNewUser(@Valid @RequestBody User user) throws JsonProcessingException {
         log.info("Получен запрос на добавление нового пользователя");
         return userService.addNewUser(user);
     }

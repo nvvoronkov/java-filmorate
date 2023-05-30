@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.service;
 
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,17 +10,22 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
+import ru.yandex.practicum.filmorate.storage.user.UserStorage;
+
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
 @Service
 public class UserService {
-    private final InMemoryUserStorage userStorage;
+    private final UserStorage userStorage;
+    private final DateTimeFormatter dateTimeFormatter;
 
     @Autowired
     public UserService(InMemoryUserStorage userStorage) {
         this.userStorage = userStorage;
+        dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     }
 
     public List<User> getListOfUsers() {
@@ -27,7 +33,7 @@ public class UserService {
     }
 
     public User getUserById(int userId) {
-        if (userStorage.isUserInStorage(userId)) {
+        if (InMemoryUserStorage.isUserInStorage(userId)) {
             return userStorage.getUserById(userId);
         } else {
             log.info("Пользователь id={} не найден", userId);
@@ -38,14 +44,16 @@ public class UserService {
     public User addNewUser(User user) throws JsonProcessingException {
         if (InMemoryUserStorage.isUserValid(user)) {
             return userStorage.addNewUser(user);
-        } else return null;
+        } else
+            return null;
     }
 
     public User updateUser(User updatedUser) throws JsonProcessingException {
         if (userStorage.isUserInStorage(updatedUser)) {
             if (InMemoryUserStorage.isUserValid(updatedUser)) {
                 return userStorage.updateUser(updatedUser);
-            } else return null;
+            } else
+                return null;
         } else {
             log.info("Пользователь id={} не найден", updatedUser.getId());
             throw new NotFoundException(String.format("Не удалось обновить данные пользователя id=%s т.к. " +

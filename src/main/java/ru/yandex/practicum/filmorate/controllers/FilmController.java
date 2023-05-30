@@ -4,7 +4,6 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +29,6 @@ import ru.yandex.practicum.filmorate.service.FilmService;
 public class FilmController {
     final FilmService filmService;
 
-    @Autowired
     public FilmController(FilmService service) {
         this.filmService = service;
     }
