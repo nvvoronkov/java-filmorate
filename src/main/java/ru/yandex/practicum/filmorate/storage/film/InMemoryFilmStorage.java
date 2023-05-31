@@ -16,10 +16,11 @@ import java.util.Map;
 public class InMemoryFilmStorage implements FilmStorage {
     private final Map<Integer, Film> films = new HashMap<>();
     public static final LocalDate RELEASE_DATE = LocalDate.of(1895, 12, 28);
+
     public Map<Integer, Film> getFilms() {
         return films;
     }
-    
+
     @Override
     public Film addNewFilm(Film newFilm) {
         newFilm.generateAndSetId();
@@ -59,7 +60,6 @@ public class InMemoryFilmStorage implements FilmStorage {
     public void deleteLike(int filmId, int userId) {
         films.get(filmId).deleteLike(userId);
         log.info("Для фильма id = {} удален лайк пользователя id={}", filmId, userId);
-    
     }
 
     @Override
