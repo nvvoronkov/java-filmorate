@@ -26,7 +26,6 @@ public class User {
     String email;
     @NotBlank(message = "Не указан login")
     String login;
-    @NotBlank(message = "Не указано имя")
     String name;
     @JsonFormat(pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -47,5 +46,9 @@ public class User {
 
     public void deleteFriend(int friend) {
         setOfFriends.remove(friend);
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
