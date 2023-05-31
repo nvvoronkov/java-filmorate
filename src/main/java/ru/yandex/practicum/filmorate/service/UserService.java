@@ -46,7 +46,7 @@ public class UserService {
     }
 
     public User updateUser(User updatedUser) throws JsonProcessingException {
-        if (userStorage.isUserInStorage(updatedUser)) {
+        if (userStorage.isUserInStorage(updatedUser.getId())) {
             if (UserValidation.isUserValid(updatedUser)) {
                 return userStorage.updateUser(updatedUser);
             } else

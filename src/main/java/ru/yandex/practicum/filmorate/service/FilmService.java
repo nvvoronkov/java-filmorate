@@ -51,8 +51,8 @@ public class FilmService {
     }
 
     public Film updateFilm(Film updatedFilm) throws JsonProcessingException {
-        if (filmStorage.isFilmInStorage(updatedFilm) && FilmValidation.isFilmValid(updatedFilm)) {
-            if (filmStorage.isFilmInStorage(updatedFilm.getId())) {
+        if (filmStorage.isFilmInStorage(updatedFilm.getId())) {
+            if (FilmValidation.isFilmValid(updatedFilm)) {
                 return filmStorage.updateFilm(updatedFilm);
             } else {
                 return null;
