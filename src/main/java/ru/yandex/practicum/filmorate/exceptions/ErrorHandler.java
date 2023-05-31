@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.yandex.practicum.filmorate.controllers.FilmController;
 import ru.yandex.practicum.filmorate.controllers.UserController;
+import ru.yandex.practicum.filmorate.model.ErrorResponse;
 import ru.yandex.practicum.filmorate.service.FilmService;
 import ru.yandex.practicum.filmorate.service.UserService;
 import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
@@ -21,31 +22,41 @@ public class ErrorHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ValidationException.class)
-    public String handlerOfValidationException(final ValidationException e) {
-        return String.format("Ошибка. %s", e.getMessage());
+    public ErrorResponse handlerOfValidationException(final ValidationException e) {
+        return new ErrorResponse(
+            String.format("Ошибка  \"%s\".", e.getMessage())
+        );
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public String handlerOfMethodArgumentNotValidException(final MethodArgumentNotValidException e) {
-        return String.format("Ошибка. %s", e.getMessage());
+    public ErrorResponse handlerOfMethodArgumentNotValidException(final MethodArgumentNotValidException e) {
+        return new ErrorResponse(
+            String.format("Ошибка \"%s\".", e.getMessage())
+        );
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ConstraintViolationException.class)
-    public String handlerOfConstraintViolationException(final ConstraintViolationException e) {
-        return String.format("Ошибка. %s", e.getMessage());
+    public ErrorResponse handlerOfConstraintViolationException(final ConstraintViolationException e) {
+        return new ErrorResponse(
+            String.format("Ошибка \"%s\".", e.getMessage())
+        );
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NotFoundException.class)
-    public String handlerOfObjectNotFoundException(final NotFoundException e) {
-        return String.format("Ошибка. %s", e.getMessage());
+    public ErrorResponse handlerOfObjectNotFoundException(final NotFoundException e) {
+        return new ErrorResponse(
+            String.format("Ошибка \"%s\".", e.getMessage())
+        );
     }
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public String handlerExceptions(final Exception e) {
-        return String.format("Ошибка. %s", e.getMessage());
+    public ErrorResponse handlerExceptions(final Exception e) {
+        return new ErrorResponse(
+            String.format("Ошибка \"%s\".", e.getMessage())
+        );
     }
 }
