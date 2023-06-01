@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -29,13 +30,9 @@ import ru.yandex.practicum.filmorate.service.FilmService;
 @Slf4j
 @RequestMapping("/films")
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@RequiredArgsConstructor
 public class FilmController {
-    @Autowired
     final FilmService filmService;
-
-    public FilmController(FilmService filmService) {
-        this.filmService = filmService;
-    }
 
     @PostMapping
     public Film addNewFilm(@RequestBody Film newFilm) throws JsonProcessingException {
@@ -83,7 +80,7 @@ public class FilmController {
 
     @DeleteMapping("/{id}")
     public void deleteFilm(@PathVariable("id") int filmId) {
-        log.info("Получен запрос на удаление фильмf id={}", filmId);
+        log.info("Получен запрос на удаление фильма id={}", filmId);
         filmService.deleteFilm(filmId);
     }
 }

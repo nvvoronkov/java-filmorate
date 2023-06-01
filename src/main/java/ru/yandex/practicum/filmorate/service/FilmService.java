@@ -2,7 +2,6 @@ package ru.yandex.practicum.filmorate.service;
 
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -20,7 +19,6 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class FilmService {
-    @Autowired
     public final InMemoryFilmStorage filmStorage;
     public final InMemoryUserStorage userStorage;
 
