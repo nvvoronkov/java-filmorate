@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.controllers;
 
 import java.util.List;
+import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -37,7 +38,7 @@ public class UserController {
     }
 
     @PutMapping
-    public User updateUser(@Valid @RequestBody User updatedUser) throws JsonProcessingException {
+    public Optional<User> updateUser(@Valid @RequestBody User updatedUser) throws JsonProcessingException {
         log.info("Получен запрос на обновление данных пользователя id={}", updatedUser.getId());
         return userService.updateUser(updatedUser);
     }
@@ -49,7 +50,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable("id") int userId) {
+    public Optional<User> getUserById(@PathVariable("id") int userId) {
         log.info("Получен запрос на получение пользователя id={}", userId);
         return userService.getUserById(userId);
     }

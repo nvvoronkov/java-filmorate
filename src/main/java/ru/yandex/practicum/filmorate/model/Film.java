@@ -6,6 +6,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.validation.constraints.NotBlank;
@@ -36,6 +37,8 @@ public class Film {
     int duration;
     int rate;
     Set<Integer> setOfLikes;
+    LinkedHashSet<Genre> genre;
+    MPA mpa;
 
     public void generateAndSetId() {
         setId(++identificator);

@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.service;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -14,6 +15,7 @@ import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
 import ru.yandex.practicum.filmorate.validator.FilmValidation;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -28,12 +30,12 @@ public class FilmService {
     }
 
     public List<Film> getListOfFilms() {
-        return filmStorage.getListOfFilms();
+        return filmStorage.getAll();
     }
 
-    public Film getFilmById(int filmId) {
+    public Optional<Film> getFilmById(int filmId) {
         if (filmStorage.isFilmInStorage(filmId)) {
-            return filmStorage.getFilmById(filmId);
+            return filmStorage.getById(filmId);
         } else {
             log.info("Фильм id={} не найден", filmId);
             throw new NotFoundException(String.format("Фильм id=%s не найден", filmId));
@@ -42,16 +44,16 @@ public class FilmService {
 
     public Film addNewFilm(Film newFilm) throws JsonProcessingException {
         if (FilmValidation.isFilmValid(newFilm)) {
-            return filmStorage.addNewFilm(newFilm);
+            return filmStorage.add(newFilm);
         } else {
             return null;
         }
     }
 
-    public Film updateFilm(Film updatedFilm) throws JsonProcessingException {
+    public Optional<Film> updateFilm(@NotNull Film updatedFilm) throws JsonProcessingException {
         if (filmStorage.isFilmInStorage(updatedFilm.getId())) {
             if (FilmValidation.isFilmValid(updatedFilm)) {
-                return filmStorage.updateFilm(updatedFilm);
+                return filmStorage.update(updatedFilm);
             } else {
                 return null;
             }
@@ -96,12 +98,12 @@ public class FilmService {
             log.info("Фильм id={} не найден", filmId);
             throw new NotFoundException(String.format("Фильм id=%s не найден", filmId));
         }
-        filmStorage.deleteFilm(filmId);
+        filmStorage.delete(filmId);
     }
 
     public List<Film> getPopularFilms(int count) {
         log.info("Направлен список из {} фильмов с наибольшим количеством лайков", count);
-        return filmStorage.getListOfFilms().stream()
+        return filmStorage.getAll().stream()
                 .sorted((f1, f2) -> (f1.getSetOfLikes().size() - f2.getSetOfLikes().size()) * (-1))
                 .limit(count)
                 .collect(Collectors.toList());

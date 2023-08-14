@@ -13,6 +13,7 @@ import ru.yandex.practicum.filmorate.validator.UserValidation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -24,12 +25,12 @@ public class UserService {
     }
 
     public List<User> getListOfUsers() {
-        return userStorage.getListOfUsers();
+        return (List<User>) userStorage.getAll();
     }
 
-    public User getUserById(int userId) {
+    public Optional<User> getUserById(int userId) {
         if (userStorage.isUserInStorage(userId)) {
-            return userStorage.getUserById(userId);
+            return userStorage.getById(userId);
         } else {
             log.info("Пользователь id={} не найден", userId);
             throw new NotFoundException(String.format("Пользователь id=%s не найден", userId));
@@ -38,15 +39,15 @@ public class UserService {
 
     public User addNewUser(User user) throws JsonProcessingException  {
         if (UserValidation.isUserValid(user)) {
-            return userStorage.addNewUser(user);
+            return userStorage.add(user);
         } else
             return null;
     }
 
-    public User updateUser(User updatedUser) throws JsonProcessingException {
+    public Optional<User> updateUser(User updatedUser) throws JsonProcessingException {
         if (userStorage.isUserInStorage(updatedUser.getId())) {
             if (UserValidation.isUserValid(updatedUser)) {
-                return userStorage.updateUser(updatedUser);
+                return userStorage.update(updatedUser);
             } else
                 return null;
         } else {
@@ -95,7 +96,7 @@ public class UserService {
             log.info("Пользователь id={} не найден", userId);
             throw new NotFoundException(String.format("Пользователь id=%s не найден", userId));
         }
-        userStorage.deleteUser(userId);
+        userStorage.delete(userId);
     }
 
     public List<User> getListOfFriends(int userId) {

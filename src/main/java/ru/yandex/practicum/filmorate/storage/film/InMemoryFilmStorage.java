@@ -6,10 +6,7 @@ import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Component
@@ -22,7 +19,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public Film addNewFilm(Film newFilm) {
+    public Film add(Film newFilm) {
         newFilm.generateAndSetId();
         newFilm.generateSetOfLikes();
         films.put(newFilm.getId(), newFilm);
@@ -31,23 +28,23 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public Film updateFilm(Film updatedFilm) {
+    public Optional<Film> update(Film updatedFilm) {
         updatedFilm.setSetOfLikes(films.get(updatedFilm.getId()).getSetOfLikes());
         films.put(updatedFilm.getId(), updatedFilm);
         log.info("Данные о фильме id = {} обновлены", updatedFilm.getId());
-        return updatedFilm;
+        return Optional.of(updatedFilm);
     }
 
     @Override
-    public List<Film> getListOfFilms() {
+    public List<Film> getAll() {
         log.info("Направлен список всех фильмов");
         return new ArrayList<>(films.values());
     }
 
     @Override
-    public Film getFilmById(int filmId) {
+    public Optional<Film> getById(Integer filmId) {
         log.info("Направлен фильм id={}", filmId);
-        return films.get(filmId);
+        return Optional.ofNullable(films.get(filmId));
     }
 
     @Override
@@ -63,7 +60,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public void deleteFilm(int filmId) {
+    public void delete(Integer filmId) {
         films.remove(filmId);
         log.info("Фильм с id = {} удален.", filmId);
     }

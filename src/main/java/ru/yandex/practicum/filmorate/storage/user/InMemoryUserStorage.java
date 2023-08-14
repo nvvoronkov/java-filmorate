@@ -17,7 +17,7 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public User addNewUser(User user) {
+    public User add(User user) {
         user.generateAndSetId();
         user.generateSetOfFriends();
         users.put(user.getId(), user);
@@ -26,23 +26,23 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public User updateUser(User updatedUser) {
+    public Optional<User> update(User updatedUser) {
         updatedUser.setSetOfFriends(users.get(updatedUser.getId()).getSetOfFriends());
         users.put(updatedUser.getId(), updatedUser);
         log.info("Данные пользователя id = {} обновлены", updatedUser.getId());
-        return updatedUser;
+        return Optional.of(updatedUser);
     }
 
     @Override
-    public List<User> getListOfUsers() {
+    public List<User> getAll() {
         log.info("Направлен список всех пользователей");
         return new ArrayList<>(users.values());
     }
 
     @Override
-    public User getUserById(int userId) {
+    public Optional<User> getById(Integer userId) {
         log.info("Направлен пользователь id={}", userId);
-        return users.get(userId);
+        return Optional.ofNullable(users.get(userId));
     }
 
     @Override
@@ -62,7 +62,7 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public void deleteUser(int userId) {
+    public void delete(Integer userId) {
         users.remove(userId);
         log.info("Пользователя с id={} удален", userId);
     }

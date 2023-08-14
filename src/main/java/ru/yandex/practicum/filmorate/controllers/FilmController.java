@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.controllers;
 
 import java.util.List;
+import java.util.Optional;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 
@@ -40,13 +41,13 @@ public class FilmController {
     }
 
     @PutMapping
-    public Film updateFilm(@Valid @RequestBody Film film) throws JsonProcessingException {
+    public Optional<Film> updateFilm(@Valid @RequestBody Film film) throws JsonProcessingException {
         log.info("Получен запрос на обновление фильма id={}", film.getId());
         return filmService.updateFilm(film);
     }
 
     @GetMapping("/{id}")
-    public Film getFilmById(@PathVariable("id") int filmId) {
+    public Optional<Film> getFilmById(@PathVariable("id") int filmId) {
         log.info("Получен запрос на получение фильма id={}", filmId);
         return filmService.getFilmById(filmId);
     }
