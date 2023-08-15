@@ -19,8 +19,7 @@ import javax.validation.constraints.NotBlank;
 @Builder(toBuilder = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class User {
-    static int identificator = 0;
-    int id;
+    int id = 0;
     @Email(message = "Указан некорректный email")
     @NotBlank
     String email;
@@ -33,7 +32,7 @@ public class User {
     Set<Integer> setOfFriends;
 
     public void generateAndSetId() {
-        setId(++identificator);
+        setId(++id);
     }
 
     public void generateSetOfFriends() {
@@ -46,9 +45,5 @@ public class User {
 
     public void deleteFriend(int friend) {
         setOfFriends.remove(friend);
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }

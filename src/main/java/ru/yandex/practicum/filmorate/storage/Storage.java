@@ -10,7 +10,5 @@ public interface Storage<T> {
 
     Optional<T> getById(Integer id);
 
-    void delete(Integer id);
-
     Collection<T> getAll();
 }

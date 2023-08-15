@@ -1,27 +1,25 @@
 package ru.yandex.practicum.filmorate.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.experimental.FieldDefaults;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
 
 @Data
 @AllArgsConstructor
 @Builder(toBuilder = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Film {
-    static int identificator = 0;
-    int id;
+    int id = 0;
     @NotBlank(message = "Не указанно название фильма")
     String name;
     @NotBlank
@@ -37,11 +35,11 @@ public class Film {
     int duration;
     int rate;
     Set<Integer> setOfLikes;
-    LinkedHashSet<Genre> genre;
-    MPA mpa;
+    List<Genre> genre;
+    Mpa mpa;
 
     public void generateAndSetId() {
-        setId(++identificator);
+        setId(++id);
     }
 
     public void generateSetOfLikes() {
@@ -54,5 +52,9 @@ public class Film {
 
     public void deleteLike(int userId) {
         setOfLikes.remove(userId);
+    }
+
+    public void addGenre(Genre genreForAdd) {
+        genre.add(genreForAdd);
     }
 }

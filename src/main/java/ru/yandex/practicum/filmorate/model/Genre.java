@@ -6,7 +6,6 @@ import lombok.Data;
 
 @Builder
 @Data
-@AllArgsConstructor
 public class Genre {
     private int id;
     private String name;

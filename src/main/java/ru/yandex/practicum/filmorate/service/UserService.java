@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.storage.UserDbStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 import ru.yandex.practicum.filmorate.validator.UserValidation;
 
@@ -18,19 +19,19 @@ import java.util.Optional;
 @Slf4j
 @Service
 public class UserService {
-    private final UserStorage userStorage;
+    private final UserDbStorage userDbStorage;
 
-    public UserService(UserStorage userStorage) {
-        this.userStorage = userStorage;
+    public UserService(UserDbStorage userDbStorage) {
+        this.userDbStorage = userDbStorage;
     }
 
     public List<User> getListOfUsers() {
-        return (List<User>) userStorage.getAll();
+        return (List<User>) userDbStorage.getAll();
     }
 
     public Optional<User> getUserById(int userId) {
-        if (userStorage.isUserInStorage(userId)) {
-            return userStorage.getById(userId);
+        if (userDbStorage.checkIsObjectInStorage(userId)) {
+            return userDbStorage.getById(userId);
         } else {
             log.info("Пользователь id={} не найден", userId);
             throw new NotFoundException(String.format("Пользователь id=%s не найден", userId));
@@ -39,15 +40,15 @@ public class UserService {
 
     public User addNewUser(User user) throws JsonProcessingException  {
         if (UserValidation.isUserValid(user)) {
-            return userStorage.add(user);
+            return userDbStorage.add(user);
         } else
             return null;
     }
 
     public Optional<User> updateUser(User updatedUser) throws JsonProcessingException {
-        if (userStorage.isUserInStorage(updatedUser.getId())) {
+        if (userDbStorage.checkIsObjectInStorage(updatedUser.getId())) {
             if (UserValidation.isUserValid(updatedUser)) {
-                return userStorage.update(updatedUser);
+                return userDbStorage.update(updatedUser);
             } else
                 return null;
         } else {
@@ -58,66 +59,66 @@ public class UserService {
     }
 
     public void addNewFriend(int userId, int friendId) {
-        if (!(userStorage.isUserInStorage(userId))) {
+        if (!(userDbStorage.checkIsObjectInStorage(userId))) {
             log.info("Пользователь id={} не найден", userId);
             throw new NotFoundException(String.format("Пользователь id=%s не найден", userId));
         }
-        if (!userStorage.isUserInStorage(friendId)) {
+        if (!userDbStorage.checkIsObjectInStorage(friendId)) {
             log.info("Пользователь id={} не найден", friendId);
             throw new NotFoundException(String.format("Пользователь id=%s не найден", friendId));
         }
-        userStorage.addNewFriend(userId, friendId);
+        userDbStorage.addFriend(userId, friendId);
     }
 
     public void deleteFriend(int userId, int friendId) {
-        if (!userStorage.isUserInStorage(userId)) {
+        if (!userDbStorage.checkIsObjectInStorage(userId)) {
             log.info("Пользователь id={} не найден", userId);
             throw new NotFoundException(String.format("Пользователь id=%s не найден", userId));
         }
-        if (!userStorage.isUserInStorage(friendId)) {
+        if (!userDbStorage.checkIsObjectInStorage(friendId)) {
             log.info("Пользователь id={} не найден", friendId);
             throw new NotFoundException(String.format("Пользователь id=%s не найден", friendId));
         }
-        if (!userStorage.areTheseUsersFriends(userId, friendId)) {
+        if (userDbStorage.areTheseUsersFriends(userId, friendId)) {
             log.info("Пользователь id={} не в списке друзей пользователя id={}", friendId, userId);
             throw new NotFoundException(String.format("Пользователь id=%s не в списке друзей пользователя id=%s",
                     friendId, userId));
         }
-        if (!userStorage.areTheseUsersFriends(friendId, userId)) {
+        if (userDbStorage.areTheseUsersFriends(friendId, userId)) {
             log.info("Пользователь id={} не в списке друзей пользователя id={}", userId, friendId);
             throw new NotFoundException(String.format("Пользователь id=%s не в списке друзей пользователя id=%s",
                     userId, friendId));
         }
-        userStorage.deleteFriend(userId, friendId);
+        userDbStorage.deleteFriend(userId, friendId);
     }
 
     public void deleteUser(int userId) {
-        if (!userStorage.isUserInStorage(userId)) {
+        if (!userDbStorage.isUserInStorage(userId)) {
             log.info("Пользователь id={} не найден", userId);
             throw new NotFoundException(String.format("Пользователь id=%s не найден", userId));
         }
-        userStorage.delete(userId);
+        userDbStorage.delete(userId);
     }
 
     public List<User> getListOfFriends(int userId) {
-        if (!userStorage.isUserInStorage(userId)) {
+        if (!userDbStorage.isUserInStorage(userId)) {
             log.info("Пользователь id={} не найден", userId);
             throw new NotFoundException(String.format("Пользователь id=%s не найден", userId));
         }
-        return userStorage.getListOfFriends(userId);
+        return userDbStorage.getListOfFriends(userId);
     }
 
     public List<User> getListOfCommonFriends(int userId, int friendId) {
-        if (!userStorage.isUserInStorage(userId)) {
+        if (!userDbStorage.isUserInStorage(userId)) {
             log.info("Пользователь id={} не найден", userId);
             throw new NotFoundException(String.format("Пользователь id=%s не найден", userId));
         }
-        if (!userStorage.isUserInStorage(friendId)) {
+        if (!userDbStorage.isUserInStorage(friendId)) {
             log.info("Пользователь id={} не найден", friendId);
             throw new NotFoundException(String.format("Пользователь id=%s не найден", friendId));
         }
-        ArrayList<User> resultList = new ArrayList<>(userStorage.getListOfFriends(userId));
-        resultList.retainAll(userStorage.getListOfFriends(friendId));
+        ArrayList<User> resultList = new ArrayList<>(userDbStorage.getListOfFriends(userId));
+        resultList.retainAll(userDbStorage.getListOfFriends(friendId));
         log.info("Направлен общий список друзей пользователей id={} и id={}", userId, friendId);
         return resultList;
     }

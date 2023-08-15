@@ -43,6 +43,12 @@ public class UserController {
         return userService.updateUser(updatedUser);
     }
 
+    @DeleteMapping
+    public void deleteUser(@Valid @RequestBody int id) {
+        log.info("Получен запрос на удаление пользователя с id={}", id);
+        userService.deleteUser(id);
+    }
+
     @GetMapping
     private List<User> getListOfUsers() {
         log.info("Получен запрос на получение списка пользователей");
