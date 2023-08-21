@@ -19,7 +19,7 @@ import javax.validation.constraints.NotBlank;
 @Builder(toBuilder = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class User {
-    int id = 0;
+    int id;
     @Email(message = "Указан некорректный email")
     @NotBlank
     String email;

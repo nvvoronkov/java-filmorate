@@ -2,11 +2,11 @@ package ru.yandex.practicum.filmorate.storage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.exceptions.ObjectNotFoundException;
+import ru.yandex.practicum.filmorate.mapper.FilmMapper;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.User;
@@ -17,10 +17,10 @@ import java.util.*;
 @Repository("filmDbStorage")
 public class FilmDbStorage implements Storage<Film> {
     private final JdbcTemplate jdbcTemplate;
-    private final RowMapper<Film> filmMapper;
+    private final FilmMapper filmMapper;
 
     @Autowired
-    public FilmDbStorage(JdbcTemplate jdbcTemplate, RowMapper<Film> filmMapper) {
+    public FilmDbStorage(JdbcTemplate jdbcTemplate, FilmMapper filmMapper) {
         this.jdbcTemplate = jdbcTemplate;
         this.filmMapper = filmMapper;
     }

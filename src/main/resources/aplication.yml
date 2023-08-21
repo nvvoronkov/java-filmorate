@@ -1,0 +1,17 @@
+spring:
+  h2:
+    console:
+      path: /h2-console
+      settings.trace: false
+      settings.web-allow-others: false
+      console.enabled: true
+  datasource:
+
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  jpa:
+    defer-datasource-initialization: true
+    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      globally_quoted_identifiers: true

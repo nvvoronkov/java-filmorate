@@ -2,11 +2,11 @@ package ru.yandex.practicum.filmorate.storage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.exceptions.ObjectNotFoundException;
+import ru.yandex.practicum.filmorate.mapper.MpaMapper;
 import ru.yandex.practicum.filmorate.model.Mpa;
 
 import java.sql.PreparedStatement;
@@ -14,13 +14,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+
 @Repository
 public class MpaDbStorage implements Storage<Mpa> {
     private final JdbcTemplate jdbcTemplate;
-    private final RowMapper<Mpa> mpaMapper;
+    private final MpaMapper mpaMapper;
 
     @Autowired
-    public MpaDbStorage(JdbcTemplate jdbcTemplate, RowMapper<Mpa> mpaMapper) {
+    public MpaDbStorage(JdbcTemplate jdbcTemplate, MpaMapper mpaMapper) {
         this.jdbcTemplate = jdbcTemplate;
         this.mpaMapper = mpaMapper;
     }

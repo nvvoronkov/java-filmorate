@@ -19,7 +19,7 @@ import java.util.Set;
 @Builder(toBuilder = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Film {
-    int id = 0;
+    int id;
     @NotBlank(message = "Не указанно название фильма")
     String name;
     @NotBlank
