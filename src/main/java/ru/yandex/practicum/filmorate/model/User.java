@@ -13,6 +13,7 @@ import java.util.Set;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Data
 @AllArgsConstructor
@@ -20,12 +21,12 @@ import javax.validation.constraints.NotBlank;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class User {
     int id;
+    String name;
+    @NotBlank(message = "Не указан login")
+    String login;
     @Email(message = "Указан некорректный email")
     @NotBlank
     String email;
-    @NotBlank(message = "Не указан login")
-    String login;
-    String name;
     @JsonFormat(pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     LocalDate birthday;

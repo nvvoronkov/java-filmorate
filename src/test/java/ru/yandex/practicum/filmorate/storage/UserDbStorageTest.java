@@ -30,6 +30,8 @@ class UserDbStorageTest {
         assertThat(userOptional).isPresent().hasValueSatisfying(user ->
                 assertThat(user).hasFieldOrPropertyWithValue("name", "TestUserName4"));
         assertThat(userOptional).isPresent().hasValueSatisfying(user ->
+                assertThat(user).hasFieldOrPropertyWithValue("login", "TestUserLogin4"));
+        assertThat(userOptional).isPresent().hasValueSatisfying(user ->
                 assertThat(user).hasFieldOrPropertyWithValue("email", "TestUserEmail4@ru.ru"));
         assertThat(userOptional).isPresent().hasValueSatisfying(user ->
                 assertThat(user).hasFieldOrPropertyWithValue("birthday", LocalDate.parse("2014-10-14")));
@@ -45,9 +47,9 @@ class UserDbStorageTest {
         assertThat(userOptional).isPresent().hasValueSatisfying(user ->
                 assertThat(user).hasFieldOrPropertyWithValue("name", "TestUserName"));
         assertThat(userOptional).isPresent().hasValueSatisfying(user ->
-                assertThat(user).hasFieldOrPropertyWithValue("email", "TestUserEmail@ru.ru"));
-        assertThat(userOptional).isPresent().hasValueSatisfying(user ->
                 assertThat(user).hasFieldOrPropertyWithValue("login", "TestUserLogin"));
+        assertThat(userOptional).isPresent().hasValueSatisfying(user ->
+                assertThat(user).hasFieldOrPropertyWithValue("email", "TestUserEmail@ru.ru"));
         assertThat(userOptional).isPresent().hasValueSatisfying(user ->
                 assertThat(user).hasFieldOrPropertyWithValue("birthday", LocalDate.parse("2000-10-10")));
         List<User> userList = userDbStorage.getAll();
@@ -64,9 +66,9 @@ class UserDbStorageTest {
         assertThat(userOptional).isPresent().hasValueSatisfying(user ->
                 assertThat(user).hasFieldOrPropertyWithValue("name", "UpdatedName"));
         assertThat(userOptional).isPresent().hasValueSatisfying(user ->
-                assertThat(user).hasFieldOrPropertyWithValue("email", "UpdatedEmail1@ru.ru"));
-        assertThat(userOptional).isPresent().hasValueSatisfying(user ->
                 assertThat(user).hasFieldOrPropertyWithValue("login", "UpdatedUserLogin"));
+        assertThat(userOptional).isPresent().hasValueSatisfying(user ->
+                assertThat(user).hasFieldOrPropertyWithValue("email", "UpdatedEmail1@ru.ru"));
         assertThat(userOptional).isPresent().hasValueSatisfying(user ->
                 assertThat(user).hasFieldOrPropertyWithValue("birthday", LocalDate.parse("2019-10-11")));
     }

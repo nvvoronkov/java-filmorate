@@ -26,7 +26,7 @@ public class FilmMapper implements RowMapper<Film> {
                         .id(rs.getInt("rating"))
                         .name(rs.getString("rating_name"))
                         .build())
-                .genre(createGenreListFromSting(rs.getString("genre_id_name")))
+                .genres(createGenreListFromSting(rs.getString("genre_id_name")))
                 .build();
     }
 

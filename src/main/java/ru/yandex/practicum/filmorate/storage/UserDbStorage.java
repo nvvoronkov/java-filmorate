@@ -30,8 +30,8 @@ public class UserDbStorage implements Storage<User> {
     public List<User> getAll() {
         String sqlQuery = "SELECT user_id, " +
                 "user_name, " +
-                "email, " +
                 "login, " +
+                "email, " +
                 "birthday " +
                 "FROM users " +
                 "ORDER BY user_id";
@@ -43,8 +43,8 @@ public class UserDbStorage implements Storage<User> {
         if (checkIsObjectInStorage(userId)) {
             String sqlQuery = "SELECT user_id, " +
                     "user_name, " +
-                    "email, " +
                     "login, " +
+                    "email, " +
                     "birthday " +
                     "FROM users " +
                     "WHERE user_id = ?";
@@ -88,12 +88,12 @@ public class UserDbStorage implements Storage<User> {
     public Optional<User> update(User updatedUser) {
         if (checkIsObjectInStorage(updatedUser)) {
             String sqlQuery = "UPDATE users " +
-                    "SET user_name = ?, email = ?, login = ?, birthday = ? " +
+                    "SET user_name = ?, login = ?, email = ?, birthday = ? " +
                     "WHERE user_id = ?";
             jdbcTemplate.update(sqlQuery
                     , updatedUser.getName()
-                    , updatedUser.getEmail()
                     , updatedUser.getLogin()
+                    , updatedUser.getEmail()
                     , updatedUser.getBirthday()
                     , updatedUser.getId());
             return Optional.of(updatedUser);
@@ -112,8 +112,8 @@ public class UserDbStorage implements Storage<User> {
         if (checkIsObjectInStorage(userId)) {
             String sqlQuery = "SELECT u.user_id, " +
                     "u.user_name, " +
-                    "u.email, " +
                     "u.login, " +
+                    "u.email, " +
                     "u.birthday " +
                     "FROM users_friends AS uf LEFT JOIN users AS u " +
                     "ON uf.friend_id = u.user_id " +
@@ -132,8 +132,8 @@ public class UserDbStorage implements Storage<User> {
                 "WHERE uf.status IS NOT NULL ) " +
                 "SELECT u.user_id, " +
                 "u.user_name, " +
-                "u.email, " +
                 "u.login, " +
+                "u.email, " +
                 "u.birthday " +
                 "FROM users u JOIN friends f1 " +
                 "ON u.user_id = f1.friend_id " +

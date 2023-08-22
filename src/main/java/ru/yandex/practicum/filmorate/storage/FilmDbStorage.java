@@ -69,8 +69,8 @@ public class FilmDbStorage implements Storage<Film> {
             return stmt;
         }, keyHolder);
         newFilm.setId(Objects.requireNonNull(keyHolder.getKey()).intValue());
-        if (newFilm.getGenre() != null) {
-            for (Genre genre : newFilm.getGenre()) {
+        if (newFilm.getGenres() != null) {
+            for (Genre genre : newFilm.getGenres()) {
                 String sqlQueryForGenres = "INSERT INTO films_genres (film_id, genre_id) VALUES (?, ?)";
                 jdbcTemplate.update(sqlQueryForGenres, newFilm.getId(), genre.getId());
             }
@@ -91,14 +91,14 @@ public class FilmDbStorage implements Storage<Film> {
                     , updatedFilm.getDuration()
                     , updatedFilm.getMpa().getId()
                     , updatedFilm.getId());
-            if (updatedFilm.getGenre() != null) {
-                Set<Genre> genreSet = new HashSet<>(updatedFilm.getGenre());
-                updatedFilm.getGenre().clear();
-                updatedFilm.getGenre().addAll(genreSet);
-                updatedFilm.getGenre().sort(Comparator.comparingInt(Genre::getId));
+            if (updatedFilm.getGenres() != null) {
+                Set<Genre> genreSet = new HashSet<>(updatedFilm.getGenres());
+                updatedFilm.getGenres().clear();
+                updatedFilm.getGenres().addAll(genreSet);
+                updatedFilm.getGenres().sort(Comparator.comparingInt(Genre::getId));
                 String sqlQueryForDeleteOldGenres = "delete from films_genres where film_id = ?";
                 jdbcTemplate.update(sqlQueryForDeleteOldGenres, updatedFilm.getId());
-                for (Genre genre : updatedFilm.getGenre()) {
+                for (Genre genre : updatedFilm.getGenres()) {
                     String sqlQueryForAddGenres = "insert into films_genres (film_id, genre_id) values(?, ?)";
                     jdbcTemplate.update(sqlQueryForAddGenres, updatedFilm.getId(), genre.getId());
                 }

@@ -35,7 +35,8 @@ public class Film {
     int duration;
     int rate;
     Set<Integer> setOfLikes;
-    List<Genre> genre;
+    @NotNull
+    List<Genre> genres;
     Mpa mpa;
 
     public void generateAndSetId() {
@@ -55,6 +56,6 @@ public class Film {
     }
 
     public void addGenre(Genre genreForAdd) {
-        genre.add(genreForAdd);
+        genres.add(genreForAdd);
     }
 }
