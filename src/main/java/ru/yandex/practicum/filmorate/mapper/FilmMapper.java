@@ -22,11 +22,11 @@ public class FilmMapper implements RowMapper<Film> {
                 .description(rs.getString("description"))
                 .releaseDate(LocalDate.parse(rs.getString("release_date")))
                 .duration(rs.getInt("duration"))
+                .genres(createGenreListFromSting(rs.getString("genre_id_name")))
                 .mpa(Mpa.builder()
                         .id(rs.getInt("rating"))
                         .name(rs.getString("rating_name"))
                         .build())
-                .genres(createGenreListFromSting(rs.getString("genre_id_name")))
                 .build();
     }
 

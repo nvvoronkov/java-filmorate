@@ -9,6 +9,7 @@ import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.service.MpaService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,11 +18,8 @@ public class RatingController {
     private final MpaService mpaService;
 
     @GetMapping("/{id}")
-    public Mpa getMpaById(@PathVariable Integer id) {
-        if (mpaService.getRatingById(id).isPresent()) {
-            return mpaService.getRatingById(id).get();
-        }
-        return null;
+    public Optional<Mpa> getMpaById(@PathVariable Integer id) {
+        return mpaService.getRatingById(id);
     }
 
     @GetMapping

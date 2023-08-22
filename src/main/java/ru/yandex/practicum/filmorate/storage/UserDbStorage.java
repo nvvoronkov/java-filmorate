@@ -155,9 +155,8 @@ public class UserDbStorage implements Storage<User> {
         return Boolean.TRUE.equals(jdbcTemplate.queryForObject(sqlQuery, Boolean.class, userId));
     }
 
-    //TODO
     public boolean areTheseUsersFriends(int userId, int friendId) {
         String sqlQuery = "SELECT EXISTS (SELECT 1 FROM users_friends WHERE user_id = ? AND friend_id = ?)";
-        return !Boolean.TRUE.equals(jdbcTemplate.queryForObject(sqlQuery, Boolean.class, userId));
+        return !Boolean.TRUE.equals(jdbcTemplate.queryForObject(sqlQuery, Boolean.class, userId, friendId));
     }
 }

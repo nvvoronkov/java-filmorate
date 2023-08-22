@@ -23,10 +23,13 @@ INSERT INTO genres (genre_name)
 VALUES ('Мультфильм');
 
 INSERT INTO genres (genre_name)
+VALUES ('Триллер');
+
+INSERT INTO genres (genre_name)
 VALUES ('Документальный');
 
 INSERT INTO genres (genre_name)
-VALUES ('Вестерн');
+VALUES ('Боевик');
 
-INSERT INTO genres (genre_name)
-VALUES ('Ужасы');
+
+

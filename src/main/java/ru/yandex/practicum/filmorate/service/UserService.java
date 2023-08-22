@@ -83,11 +83,6 @@ public class UserService {
             throw new NotFoundException(String.format("Пользователь id=%s не в списке друзей пользователя id=%s",
                     friendId, userId));
         }
-        if (userDbStorage.areTheseUsersFriends(friendId, userId)) {
-            log.info("Пользователь id={} не в списке друзей пользователя id={}", userId, friendId);
-            throw new NotFoundException(String.format("Пользователь id=%s не в списке друзей пользователя id=%s",
-                    userId, friendId));
-        }
         userDbStorage.deleteFriend(userId, friendId);
     }
 

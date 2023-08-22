@@ -14,6 +14,7 @@ import ru.yandex.practicum.filmorate.storage.UserDbStorage;
 import ru.yandex.practicum.filmorate.validator.FilmValidation;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -56,7 +57,7 @@ public class FilmService {
             if (FilmValidation.isFilmValid(updatedFilm)) {
                 return filmDbStorage.update(updatedFilm);
             } else {
-                return Optional.empty();
+                throw new ValidationException("Фильм не прошёл валидацию");
             }
         } else {
             log.info("Фильм id={} не найден", updatedFilm);

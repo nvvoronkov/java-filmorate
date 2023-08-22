@@ -35,7 +35,6 @@ public class Film {
     int duration;
     int rate;
     Set<Integer> setOfLikes;
-    @NotNull
     List<Genre> genres;
     Mpa mpa;
 
@@ -53,9 +52,5 @@ public class Film {
 
     public void deleteLike(int userId) {
         setOfLikes.remove(userId);
-    }
-
-    public void addGenre(Genre genreForAdd) {
-        genres.add(genreForAdd);
     }
 }
