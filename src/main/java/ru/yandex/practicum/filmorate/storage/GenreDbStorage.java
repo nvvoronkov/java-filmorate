@@ -10,9 +10,7 @@ import ru.yandex.practicum.filmorate.mapper.GenreMapper;
 import ru.yandex.practicum.filmorate.model.Genre;
 
 import java.sql.PreparedStatement;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class GenreDbStorage implements Storage<Genre> {
@@ -65,6 +63,28 @@ public class GenreDbStorage implements Storage<Genre> {
                 "WHERE genre_id = ? ";
         jdbcTemplate.update(sqlQuery, updatedGenre.getName(), updatedGenre.getId());
         return Optional.of(updatedGenre);
+    }
+
+    public void deleteByFilmId(Integer id) {
+        final String sqlQuery = "DELETE FROM film_genre WHERE film_id = ?";
+
+        jdbcTemplate.update(sqlQuery, id);
+    }
+
+    public List<Genre> getGenreFromFilmId(Integer id) {
+        final String sqlQuery = "SELECT G.genre_id, G.name\n" +
+                "FROM film_genre AS GF\n" +
+                "LEFT JOIN genre G on G.genre_id = GF.genre_id\n" +
+                "WHERE film_id = ?\n" +
+                "ORDER BY  G.genre_id";
+
+        return new ArrayList<>(jdbcTemplate.query(sqlQuery, genreMapper, id));
+    }
+
+    public void addGenreForFilm(Integer filmId, Integer genreId) {
+        final String sqlQuery = "INSERT INTO film_genre (film_id, genre_id) VALUES (?, ?)";
+
+        jdbcTemplate.update(sqlQuery, filmId, genreId);
     }
 
     public boolean checkIsObjectInStorage(int genreId) {

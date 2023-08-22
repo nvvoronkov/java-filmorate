@@ -38,10 +38,6 @@ public class Film {
     List<Genre> genres;
     Mpa mpa;
 
-    public void generateAndSetId() {
-        setId(++id);
-    }
-
     public void generateSetOfLikes() {
         this.setOfLikes = new HashSet<>();
     }

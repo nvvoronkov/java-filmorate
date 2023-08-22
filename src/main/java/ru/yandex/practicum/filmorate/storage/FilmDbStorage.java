@@ -82,15 +82,13 @@ public class FilmDbStorage implements Storage<Film> {
     public Optional<Film> update(Film updatedFilm) {
         if (checkIsObjectInStorage(updatedFilm)) {
             String sqlQuery = "UPDATE films SET " +
-                    "film_name = ?, description = ?, release_date = ?, duration = ?, rate = ?, genres = ? rating = ? " +
+                    "film_name = ?, description = ?, release_date = ?, duration = ?, rating = ? " +
                     "WHERE film_id = ?";
             jdbcTemplate.update(sqlQuery
                     , updatedFilm.getName()
                     , updatedFilm.getDescription()
                     , updatedFilm.getReleaseDate()
                     , updatedFilm.getDuration()
-                    , updatedFilm.getRate()
-                    , updatedFilm.getGenres()
                     , updatedFilm.getMpa().getId()
                     , updatedFilm.getId());
             if (updatedFilm.getGenres() != null) {
