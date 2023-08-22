@@ -97,9 +97,6 @@ public class FilmService {
 
     public List<Film> getPopularFilms(int count) {
         log.info("Направлен список из {} фильмов с наибольшим количеством лайков", count);
-        return filmDbStorage.getAll().stream()
-                .sorted((f1, f2) -> (f1.getSetOfLikes().size() - f2.getSetOfLikes().size()) * (-1))
-                .limit(count)
-                .collect(Collectors.toList());
+        return filmDbStorage.getPopularFilms(count);
     }
 }
