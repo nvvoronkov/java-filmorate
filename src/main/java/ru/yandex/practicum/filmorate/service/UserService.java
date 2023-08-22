@@ -1,15 +1,13 @@
 package ru.yandex.practicum.filmorate.service;
 
-import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.stereotype.Service;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
-
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserDbStorage;
-import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 import ru.yandex.practicum.filmorate.validator.UserValidation;
 
 import java.util.ArrayList;
@@ -21,6 +19,7 @@ import java.util.Optional;
 public class UserService {
     private final UserDbStorage userDbStorage;
 
+    @Autowired
     public UserService(UserDbStorage userDbStorage) {
         this.userDbStorage = userDbStorage;
     }
@@ -84,24 +83,11 @@ public class UserService {
             throw new NotFoundException(String.format("Пользователь id=%s не в списке друзей пользователя id=%s",
                     friendId, userId));
         }
-        if (userDbStorage.areTheseUsersFriends(friendId, userId)) {
-            log.info("Пользователь id={} не в списке друзей пользователя id={}", userId, friendId);
-            throw new NotFoundException(String.format("Пользователь id=%s не в списке друзей пользователя id=%s",
-                    userId, friendId));
-        }
         userDbStorage.deleteFriend(userId, friendId);
     }
 
-    public void deleteUser(int userId) {
-        if (!userDbStorage.isUserInStorage(userId)) {
-            log.info("Пользователь id={} не найден", userId);
-            throw new NotFoundException(String.format("Пользователь id=%s не найден", userId));
-        }
-        userDbStorage.delete(userId);
-    }
-
     public List<User> getListOfFriends(int userId) {
-        if (!userDbStorage.isUserInStorage(userId)) {
+        if (!userDbStorage.checkIsObjectInStorage(userId)) {
             log.info("Пользователь id={} не найден", userId);
             throw new NotFoundException(String.format("Пользователь id=%s не найден", userId));
         }
@@ -109,11 +95,11 @@ public class UserService {
     }
 
     public List<User> getListOfCommonFriends(int userId, int friendId) {
-        if (!userDbStorage.isUserInStorage(userId)) {
+        if (!userDbStorage.checkIsObjectInStorage(userId)) {
             log.info("Пользователь id={} не найден", userId);
             throw new NotFoundException(String.format("Пользователь id=%s не найден", userId));
         }
-        if (!userDbStorage.isUserInStorage(friendId)) {
+        if (!userDbStorage.checkIsObjectInStorage(friendId)) {
             log.info("Пользователь id={} не найден", friendId);
             throw new NotFoundException(String.format("Пользователь id=%s не найден", friendId));
         }

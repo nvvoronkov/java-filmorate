@@ -6,26 +6,24 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.yandex.practicum.filmorate.model.Mpa;
-import ru.yandex.practicum.filmorate.service.RatingService;
+import ru.yandex.practicum.filmorate.service.MpaService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/mpa")
 public class RatingController {
-    private final RatingService ratingService;
+    private final MpaService mpaService;
 
     @GetMapping("/{id}")
-    public Mpa getMpaById(@PathVariable Integer id) {
-        if (ratingService.getRatingById(id).isPresent()) {
-            return ratingService.getRatingById(id).get();
-        }
-        return null;
+    public Optional<Mpa> getMpaById(@PathVariable Integer id) {
+        return mpaService.getRatingById(id);
     }
 
     @GetMapping
     public List<Mpa> getMpaAll() {
-        return ratingService.getRatingAll();
+        return mpaService.getRatingAll();
     }
 }

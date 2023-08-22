@@ -14,6 +14,7 @@ import ru.yandex.practicum.filmorate.storage.UserDbStorage;
 import ru.yandex.practicum.filmorate.validator.FilmValidation;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -24,7 +25,8 @@ public class FilmService {
     private final UserDbStorage userDbStorage;
 
     @Autowired
-    public FilmService(@Qualifier("filmDbStorage") FilmDbStorage filmDbStorage, UserDbStorage userDbStorage) {
+    public FilmService(FilmDbStorage filmDbStorage,
+                       UserDbStorage userDbStorage) {
         this.filmDbStorage = filmDbStorage;
         this.userDbStorage = userDbStorage;
     }
@@ -55,7 +57,7 @@ public class FilmService {
             if (FilmValidation.isFilmValid(updatedFilm)) {
                 return filmDbStorage.update(updatedFilm);
             } else {
-                return Optional.empty();
+                throw new ValidationException("Фильм не прошёл валидацию");
             }
         } else {
             log.info("Фильм id={} не найден", updatedFilm);
@@ -95,9 +97,6 @@ public class FilmService {
 
     public List<Film> getPopularFilms(int count) {
         log.info("Направлен список из {} фильмов с наибольшим количеством лайков", count);
-        return filmDbStorage.getAll().stream()
-                .sorted((f1, f2) -> (f1.getSetOfLikes().size() - f2.getSetOfLikes().size()) * (-1))
-                .limit(count)
-                .collect(Collectors.toList());
+        return filmDbStorage.getPopularFilms(count);
     }
 }

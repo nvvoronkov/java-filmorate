@@ -2,10 +2,11 @@ package ru.yandex.practicum.filmorate.storage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.exceptions.ObjectNotFoundException;
+import ru.yandex.practicum.filmorate.mapper.UserMapper;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.sql.PreparedStatement;
@@ -13,13 +14,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+@Repository
 public class UserDbStorage implements Storage<User> {
     private final static Integer REQUEST_TO_FRIENDS_STATUS = 1;
     private final JdbcTemplate jdbcTemplate;
-    private final RowMapper<User> userMapper;
+    private final UserMapper userMapper;
 
     @Autowired
-    public UserDbStorage(JdbcTemplate jdbcTemplate, RowMapper<User> userMapper) {
+    public UserDbStorage(JdbcTemplate jdbcTemplate, UserMapper userMapper) {
         this.jdbcTemplate = jdbcTemplate;
         this.userMapper = userMapper;
     }
@@ -30,7 +32,7 @@ public class UserDbStorage implements Storage<User> {
                 "user_name, " +
                 "login, " +
                 "email, " +
-                "birth_day " +
+                "birthday " +
                 "FROM users " +
                 "ORDER BY user_id";
         return jdbcTemplate.query(sqlQuery, userMapper);
@@ -41,8 +43,9 @@ public class UserDbStorage implements Storage<User> {
         if (checkIsObjectInStorage(userId)) {
             String sqlQuery = "SELECT user_id, " +
                     "user_name, " +
-                    "login, email, " +
-                    "birth_day " +
+                    "login, " +
+                    "email, " +
+                    "birthday " +
                     "FROM users " +
                     "WHERE user_id = ?";
             return Optional.ofNullable(jdbcTemplate.queryForObject(sqlQuery, userMapper, userId));
@@ -53,7 +56,7 @@ public class UserDbStorage implements Storage<User> {
 
     @Override
     public User add(User newUser) {
-        String sqlQuery = "INSERT INTO users (user_name, login, email, birth_day) " +
+        String sqlQuery = "INSERT INTO users (user_name, login, email, birthday) " +
                 "VALUES (?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
@@ -85,7 +88,7 @@ public class UserDbStorage implements Storage<User> {
     public Optional<User> update(User updatedUser) {
         if (checkIsObjectInStorage(updatedUser)) {
             String sqlQuery = "UPDATE users " +
-                    "SET user_name = ?, login = ?, email = ?, birth_day = ? " +
+                    "SET user_name = ?, login = ?, email = ?, birthday = ? " +
                     "WHERE user_id = ?";
             jdbcTemplate.update(sqlQuery
                     , updatedUser.getName()
@@ -111,7 +114,7 @@ public class UserDbStorage implements Storage<User> {
                     "u.user_name, " +
                     "u.login, " +
                     "u.email, " +
-                    "u.birth_day " +
+                    "u.birthday " +
                     "FROM users_friends AS uf LEFT JOIN users AS u " +
                     "ON uf.friend_id = u.user_id " +
                     "WHERE uf.user_id = ?" +
@@ -129,9 +132,9 @@ public class UserDbStorage implements Storage<User> {
                 "WHERE uf.status IS NOT NULL ) " +
                 "SELECT u.user_id, " +
                 "u.user_name, " +
-                "u.email, " +
                 "u.login, " +
-                "u.birth_day " +
+                "u.email, " +
+                "u.birthday " +
                 "FROM users u JOIN friends f1 " +
                 "ON u.user_id = f1.friend_id " +
                 "JOIN friends f2 " +
@@ -152,9 +155,8 @@ public class UserDbStorage implements Storage<User> {
         return Boolean.TRUE.equals(jdbcTemplate.queryForObject(sqlQuery, Boolean.class, userId));
     }
 
-    //TODO
     public boolean areTheseUsersFriends(int userId, int friendId) {
         String sqlQuery = "SELECT EXISTS (SELECT 1 FROM users_friends WHERE user_id = ? AND friend_id = ?)";
-        return !Boolean.TRUE.equals(jdbcTemplate.queryForObject(sqlQuery, Boolean.class, userId));
+        return !Boolean.TRUE.equals(jdbcTemplate.queryForObject(sqlQuery, Boolean.class, userId, friendId));
     }
 }

@@ -19,7 +19,7 @@ import java.util.Set;
 @Builder(toBuilder = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Film {
-    int id = 0;
+    int id;
     @NotBlank(message = "Не указанно название фильма")
     String name;
     @NotBlank
@@ -35,12 +35,8 @@ public class Film {
     int duration;
     int rate;
     Set<Integer> setOfLikes;
-    List<Genre> genre;
+    List<Genre> genres;
     Mpa mpa;
-
-    public void generateAndSetId() {
-        setId(++id);
-    }
 
     public void generateSetOfLikes() {
         this.setOfLikes = new HashSet<>();
@@ -52,9 +48,5 @@ public class Film {
 
     public void deleteLike(int userId) {
         setOfLikes.remove(userId);
-    }
-
-    public void addGenre(Genre genreForAdd) {
-        genre.add(genreForAdd);
     }
 }

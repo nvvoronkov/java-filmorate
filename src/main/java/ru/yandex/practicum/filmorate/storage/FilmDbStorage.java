@@ -2,11 +2,11 @@ package ru.yandex.practicum.filmorate.storage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.exceptions.ObjectNotFoundException;
+import ru.yandex.practicum.filmorate.mapper.FilmMapper;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.User;
@@ -17,10 +17,10 @@ import java.util.*;
 @Repository("filmDbStorage")
 public class FilmDbStorage implements Storage<Film> {
     private final JdbcTemplate jdbcTemplate;
-    private final RowMapper<Film> filmMapper;
+    private final FilmMapper filmMapper;
 
     @Autowired
-    public FilmDbStorage(JdbcTemplate jdbcTemplate, RowMapper<Film> filmMapper) {
+    public FilmDbStorage(JdbcTemplate jdbcTemplate, FilmMapper filmMapper) {
         this.jdbcTemplate = jdbcTemplate;
         this.filmMapper = filmMapper;
     }
@@ -69,8 +69,8 @@ public class FilmDbStorage implements Storage<Film> {
             return stmt;
         }, keyHolder);
         newFilm.setId(Objects.requireNonNull(keyHolder.getKey()).intValue());
-        if (newFilm.getGenre() != null) {
-            for (Genre genre : newFilm.getGenre()) {
+        if (newFilm.getGenres() != null) {
+            for (Genre genre : newFilm.getGenres()) {
                 String sqlQueryForGenres = "INSERT INTO films_genres (film_id, genre_id) VALUES (?, ?)";
                 jdbcTemplate.update(sqlQueryForGenres, newFilm.getId(), genre.getId());
             }
@@ -91,14 +91,14 @@ public class FilmDbStorage implements Storage<Film> {
                     , updatedFilm.getDuration()
                     , updatedFilm.getMpa().getId()
                     , updatedFilm.getId());
-            if (updatedFilm.getGenre() != null) {
-                Set<Genre> genreSet = new HashSet<>(updatedFilm.getGenre());
-                updatedFilm.getGenre().clear();
-                updatedFilm.getGenre().addAll(genreSet);
-                updatedFilm.getGenre().sort(Comparator.comparingInt(Genre::getId));
+            if (updatedFilm.getGenres() != null) {
+                Set<Genre> genreSet = new HashSet<>(updatedFilm.getGenres());
+                updatedFilm.getGenres().clear();
+                updatedFilm.getGenres().addAll(genreSet);
+                updatedFilm.getGenres().sort(Comparator.comparingInt(Genre::getId));
                 String sqlQueryForDeleteOldGenres = "delete from films_genres where film_id = ?";
                 jdbcTemplate.update(sqlQueryForDeleteOldGenres, updatedFilm.getId());
-                for (Genre genre : updatedFilm.getGenre()) {
+                for (Genre genre : updatedFilm.getGenres()) {
                     String sqlQueryForAddGenres = "insert into films_genres (film_id, genre_id) values(?, ?)";
                     jdbcTemplate.update(sqlQueryForAddGenres, updatedFilm.getId(), genre.getId());
                 }

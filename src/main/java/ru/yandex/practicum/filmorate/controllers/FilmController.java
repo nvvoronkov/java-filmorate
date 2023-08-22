@@ -77,10 +77,4 @@ public class FilmController {
         log.info("Получен запрос на получение списка из {} фильмов с наибольшим количеством лайков", count);
         return filmService.getPopularFilms(count);
     }
-
-    @DeleteMapping("/{id}")
-    public void deleteFilm(@PathVariable("id") int filmId) {
-        log.info("Получен запрос на удаление фильма id={}", filmId);
-        filmService.deleteFilm(filmId);
-    }
 }

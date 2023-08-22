@@ -43,12 +43,6 @@ public class UserController {
         return userService.updateUser(updatedUser);
     }
 
-    @DeleteMapping
-    public void deleteUser(@Valid @RequestBody int id) {
-        log.info("Получен запрос на удаление пользователя с id={}", id);
-        userService.deleteUser(id);
-    }
-
     @GetMapping
     private List<User> getListOfUsers() {
         log.info("Получен запрос на получение списка пользователей");
@@ -69,7 +63,7 @@ public class UserController {
 
     @DeleteMapping("/{id}/friends/{friendId}")
     public void deleteFriend(@PathVariable("id") int userId, @PathVariable("friendId") int friendId) {
-        log.info("Получен запрос на удаление польхователя id = {} из друзей пользователя id = {}", friendId, userId);
+        log.info("Получен запрос на удаление пользователя id = {} из друзей пользователя id = {}", friendId, userId);
         userService.deleteFriend(userId, friendId);
     }
 
