@@ -43,7 +43,7 @@ public class FilmMapper implements RowMapper<Film> {
             }
             return listOfGenres;
         } else {
-            return null;
+            return List.of();
         }
     }
 }

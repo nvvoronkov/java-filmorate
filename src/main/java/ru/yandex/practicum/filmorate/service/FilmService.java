@@ -45,7 +45,7 @@ public class FilmService {
         if (FilmValidation.isFilmValid(newFilm)) {
             return filmDbStorage.add(newFilm);
         } else {
-            return null;
+            throw new ValidationException(String.format("Фильм id=%s не прошел валидацию", newFilm.getId()));
         }
     }
 
