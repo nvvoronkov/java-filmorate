@@ -90,12 +90,12 @@ public class UserDbStorage implements Storage<User> {
             String sqlQuery = "UPDATE users " +
                     "SET user_name = ?, login = ?, email = ?, birthday = ? " +
                     "WHERE user_id = ?";
-            jdbcTemplate.update(sqlQuery
-                    , updatedUser.getName()
-                    , updatedUser.getLogin()
-                    , updatedUser.getEmail()
-                    , updatedUser.getBirthday()
-                    , updatedUser.getId());
+            jdbcTemplate.update(sqlQuery,
+                    updatedUser.getName(),
+                    updatedUser.getLogin(),
+                    updatedUser.getEmail(),
+                    updatedUser.getBirthday(),
+                    updatedUser.getId());
             return Optional.of(updatedUser);
         } else {
             throw new ObjectNotFoundException(String.format("Пользователь id=%s не найден.", updatedUser.getId()));
