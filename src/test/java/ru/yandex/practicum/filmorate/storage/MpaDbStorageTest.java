@@ -20,21 +20,21 @@ class MpaDbStorageTest {
     private final MpaDbStorage mpaDbStorage;
 
     @Test
-    void ShouldGetAllMpaRatings() {
+    void shouldGetAllMpaRatings() {
         List<Mpa> listOfMpa = mpaDbStorage.getAll();
         assertThatList(listOfMpa).hasSizeBetween(5, 5);
         assertThat(listOfMpa.get(0)).isEqualTo(Mpa.builder().id(1).name("G").build());
     }
 
     @Test
-    void ShouldGetMpaRatingById() {
+    void shouldGetMpaRatingById() {
         Optional<Mpa> actual = mpaDbStorage.getById(2);
         assertThat(actual).isEqualTo(Optional.ofNullable(Mpa.builder().id(2).name("PG")
                 .build()));
     }
 
     @Test
-    void ShouldAddMpaRating() {
+    void shouldAddMpaRating() {
         Mpa testRating = mpaDbStorage.add(Mpa.builder().name("TestRating1").build());
         Optional<Mpa> ratingOptional = mpaDbStorage.getById(testRating.getId());
         assertThat(ratingOptional).isPresent().hasValueSatisfying(rating ->
@@ -44,11 +44,10 @@ class MpaDbStorageTest {
     }
 
     @Test
-    void ShouldUpdateMpaRating(){
+    void shouldUpdateMpaRating() {
         Optional<Mpa> testRating = mpaDbStorage.update(Mpa.builder().id(3).name("UpdatedRating").build());
         Optional<Mpa> ratingOptional = mpaDbStorage.getById(3);
         assertThat(ratingOptional).isPresent().hasValueSatisfying(rating ->
                 assertThat(rating).hasFieldOrPropertyWithValue("name", testRating.get().getName()));
-
     }
 }
