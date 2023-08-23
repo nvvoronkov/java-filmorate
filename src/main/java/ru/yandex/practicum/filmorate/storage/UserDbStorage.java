@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @Repository
 public class UserDbStorage implements Storage<User> {
-    private final static Integer REQUEST_TO_FRIENDS_STATUS = 1;
+    private final static int REQUEST_TO_FRIENDS_STATUS = 1;
     private final JdbcTemplate jdbcTemplate;
     private final UserMapper userMapper;
 
