@@ -33,7 +33,7 @@ class GenreDbStorageTest {
     }
 
     @Test
-    void ShouldAddGenre() {
+    void shouldAddGenre() {
         Genre testGenre = genreDbStorage.add(Genre.builder().name("TestGenre1").build());
         Optional<Genre> genreOptional = genreDbStorage.getById(testGenre.getId());
         assertThat(genreOptional).isPresent().hasValueSatisfying(genre ->
@@ -43,11 +43,10 @@ class GenreDbStorageTest {
     }
 
     @Test
-    void ShouldUpdateGenre(){
+    void shouldUpdateGenre() {
         Optional<Genre> testGenre = genreDbStorage.update(Genre.builder().id(1).name("UpdatedGenre").build());
         Optional<Genre> genreOptional = genreDbStorage.getById(1);
         assertThat(genreOptional).isPresent().hasValueSatisfying(genre ->
                 assertThat(genre).hasFieldOrPropertyWithValue("name", testGenre.get().getName()));
-
     }
 }
