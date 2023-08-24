@@ -12,7 +12,6 @@ import ru.yandex.practicum.filmorate.model.User;
 import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Repository
 public class UserDbStorage implements Storage<User> {
