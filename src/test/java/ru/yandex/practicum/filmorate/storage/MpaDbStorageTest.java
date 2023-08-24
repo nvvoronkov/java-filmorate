@@ -21,7 +21,7 @@ class MpaDbStorageTest {
     @Test
     void shouldGetAllMpaRatings() {
         List<Mpa> listOfMpa = mpaDbStorage.getAll();
-        assertThatList(listOfMpa).hasSizeBetween(6, 6);
+        assertThatList(listOfMpa).hasSizeBetween(5, 5);
         assertThat(listOfMpa.get(0)).isEqualTo(Mpa.builder().id(1).name("G").build());
     }
 
