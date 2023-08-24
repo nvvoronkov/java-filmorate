@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,19 +16,15 @@ import java.util.Optional;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class UserService {
     private final UserDbStorage userDbStorage;
-
-    @Autowired
-    public UserService(UserDbStorage userDbStorage) {
-        this.userDbStorage = userDbStorage;
-    }
 
     public List<User> getListOfUsers() {
         return (List<User>) userDbStorage.getAll();
     }
 
-    public Optional<User> getUserById(int userId) {
+    public User getUserById(int userId) {
         if (userDbStorage.checkIsObjectInStorage(userId)) {
             return userDbStorage.getById(userId);
         } else {
@@ -36,14 +33,14 @@ public class UserService {
         }
     }
 
-    public User addNewUser(User user) throws JsonProcessingException  {
+    public User addNewUser(User user) throws JsonProcessingException {
         if (UserValidation.isUserValid(user)) {
             return userDbStorage.add(user);
         } else
             return null;
     }
 
-    public Optional<User> updateUser(User updatedUser) throws JsonProcessingException {
+    public User updateUser(User updatedUser) throws JsonProcessingException {
         if (userDbStorage.checkIsObjectInStorage(updatedUser.getId())) {
             if (UserValidation.isUserValid(updatedUser)) {
                 return userDbStorage.update(updatedUser);

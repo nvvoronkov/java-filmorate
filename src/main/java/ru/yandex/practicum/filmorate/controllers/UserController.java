@@ -38,7 +38,7 @@ public class UserController {
     }
 
     @PutMapping
-    public Optional<User> updateUser(@Valid @RequestBody User updatedUser) throws JsonProcessingException {
+    public User updateUser(@Valid @RequestBody User updatedUser) throws JsonProcessingException {
         log.info("Получен запрос на обновление данных пользователя id={}", updatedUser.getId());
         return userService.updateUser(updatedUser);
     }
@@ -50,7 +50,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public Optional<User> getUserById(@PathVariable("id") int userId) {
+    public User getUserById(@PathVariable("id") int userId) {
         log.info("Получен запрос на получение пользователя id={}", userId);
         return userService.getUserById(userId);
     }

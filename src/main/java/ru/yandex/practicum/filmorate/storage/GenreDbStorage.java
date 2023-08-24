@@ -36,12 +36,12 @@ public class GenreDbStorage implements Storage<Genre> {
     }
 
     @Override
-    public Optional<Genre> getById(Integer genreId) {
+    public Genre getById(Integer genreId) {
         if (checkIsObjectInStorage(genreId)) {
             String sqlQuery = "SELECT genre_id, " +
                     "genre_name " +
                     "FROM genres WHERE genre_id = ?";
-            return Optional.ofNullable(jdbcTemplate.queryForObject(sqlQuery, genreMapper, genreId));
+            return jdbcTemplate.queryForObject(sqlQuery, genreMapper, genreId);
         } else {
             throw new ObjectNotFoundException(String.format("Жанр id=%s не найден", genreId));
         }
@@ -61,11 +61,11 @@ public class GenreDbStorage implements Storage<Genre> {
     }
 
     @Override
-    public Optional<Genre> update(Genre updatedGenre) {
+    public Genre update(Genre updatedGenre) {
         String sqlQuery = "UPDATE genres SET genre_name = ? " +
                 "WHERE genre_id = ? ";
         jdbcTemplate.update(sqlQuery, updatedGenre.getName(), updatedGenre.getId());
-        return Optional.of(updatedGenre);
+        return updatedGenre;
     }
 
     public void deleteByFilmId(Integer id) {

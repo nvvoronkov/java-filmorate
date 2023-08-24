@@ -18,7 +18,7 @@ public class RatingController {
     private final MpaService mpaService;
 
     @GetMapping("/{id}")
-    public Optional<Mpa> getMpaById(@PathVariable Integer id) {
+    public Mpa getMpaById(@PathVariable Integer id) {
         return mpaService.getRatingById(id);
     }
 

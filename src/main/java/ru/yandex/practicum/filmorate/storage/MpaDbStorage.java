@@ -36,13 +36,13 @@ public class MpaDbStorage implements Storage<Mpa> {
     }
 
     @Override
-    public Optional<Mpa> getById(Integer ratingId) {
+    public Mpa getById(Integer ratingId) {
         if (checkIsObjectInStorage(ratingId)) {
             String sqlQuery = "SELECT rating_id, " +
                     "rating_name " +
                     "FROM ratings " +
                     "WHERE rating_id = ?";
-            return Optional.ofNullable(jdbcTemplate.queryForObject(sqlQuery, mpaMapper, ratingId));
+            return jdbcTemplate.queryForObject(sqlQuery, mpaMapper, ratingId);
         } else {
             throw new ObjectNotFoundException(String.format("Рейтинг MPA id=%s не найден", ratingId));
         }
@@ -62,11 +62,11 @@ public class MpaDbStorage implements Storage<Mpa> {
     }
 
     @Override
-    public Optional<Mpa> update(Mpa updatedMpa) {
+    public Mpa update(Mpa updatedMpa) {
         String sqlQuery = "UPDATE ratings SET rating_name = ? " +
                 "WHERE rating_id = ? ";
         jdbcTemplate.update(sqlQuery, updatedMpa.getName(), updatedMpa.getId());
-        return Optional.of(updatedMpa);
+        return updatedMpa;
     }
 
     public boolean checkIsObjectInStorage(Mpa mpa) {

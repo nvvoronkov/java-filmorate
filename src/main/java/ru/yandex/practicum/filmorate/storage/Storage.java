@@ -6,9 +6,9 @@ import java.util.Optional;
 public interface Storage<T> {
     T add(T obj);
 
-    Optional<T> update(T obj);
+    T update(T obj);
 
-    Optional<T> getById(Integer id);
+    T getById(Integer id);
 
     Collection<T> getAll();
 }

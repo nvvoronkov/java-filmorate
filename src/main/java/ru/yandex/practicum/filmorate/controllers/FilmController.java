@@ -41,13 +41,13 @@ public class FilmController {
     }
 
     @PutMapping
-    public Optional<Film> updateFilm(@Valid @RequestBody Film film) throws JsonProcessingException {
+    public Film updateFilm(@Valid @RequestBody Film film) throws JsonProcessingException {
         log.info("Получен запрос на обновление фильма id={}", film.getId());
         return filmService.updateFilm(film);
     }
 
     @GetMapping("/{id}")
-    public Optional<Film> getFilmById(@PathVariable("id") int filmId) {
+    public Film getFilmById(@PathVariable("id") int filmId) {
         log.info("Получен запрос на получение фильма id={}", filmId);
         return filmService.getFilmById(filmId);
     }

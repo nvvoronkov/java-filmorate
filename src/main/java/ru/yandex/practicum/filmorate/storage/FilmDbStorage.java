@@ -14,7 +14,7 @@ import ru.yandex.practicum.filmorate.model.User;
 import java.sql.PreparedStatement;
 import java.util.*;
 
-@Repository("filmDbStorage")
+@Repository
 public class FilmDbStorage implements Storage<Film> {
     private final JdbcTemplate jdbcTemplate;
     private final FilmMapper filmMapper;
@@ -79,7 +79,7 @@ public class FilmDbStorage implements Storage<Film> {
     }
 
     @Override
-    public Optional<Film> update(Film updatedFilm) {
+    public Film update(Film updatedFilm) {
         if (checkIsObjectInStorage(updatedFilm)) {
             String sqlQuery = "UPDATE films SET " +
                     "film_name = ?, description = ?, release_date = ?, duration = ?, rating = ? " +
@@ -103,7 +103,7 @@ public class FilmDbStorage implements Storage<Film> {
                     jdbcTemplate.update(sqlQueryForAddGenres, updatedFilm.getId(), genre.getId());
                 }
             }
-            return Optional.of(updatedFilm);
+            return updatedFilm;
         } else {
             throw new ObjectNotFoundException(String.format("Фильм id=%s не найден.", updatedFilm.getId()));
         }
@@ -126,7 +126,7 @@ public class FilmDbStorage implements Storage<Film> {
     }
 
     @Override
-    public Optional<Film> getById(Integer filmId) {
+    public Film getById(Integer filmId) {
         if (checkIsObjectInStorage(filmId)) {
             String sqlQuery = " WITH  result_film_Id_genre AS " +
                     "(SELECT fg.film_id, " +
@@ -152,7 +152,7 @@ public class FilmDbStorage implements Storage<Film> {
                     "LEFT JOIN   result_film_Id_genre " +
                     "ON f.film_id = result_film_Id_genre.film_id " +
                     "WHERE f.film_id = ? ";
-            return Optional.ofNullable(jdbcTemplate.queryForObject(sqlQuery, filmMapper, filmId));
+            return jdbcTemplate.queryForObject(sqlQuery, filmMapper, filmId);
         } else {
             throw new ObjectNotFoundException(String.format("Фильм id=%s не найден", filmId));
         }

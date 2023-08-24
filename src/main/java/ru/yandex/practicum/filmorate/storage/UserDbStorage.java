@@ -39,7 +39,7 @@ public class UserDbStorage implements Storage<User> {
     }
 
     @Override
-    public Optional<User> getById(Integer userId) {
+    public User getById(Integer userId) {
         if (checkIsObjectInStorage(userId)) {
             String sqlQuery = "SELECT user_id, " +
                     "user_name, " +
@@ -48,7 +48,7 @@ public class UserDbStorage implements Storage<User> {
                     "birthday " +
                     "FROM users " +
                     "WHERE user_id = ?";
-            return Optional.ofNullable(jdbcTemplate.queryForObject(sqlQuery, userMapper, userId));
+            return jdbcTemplate.queryForObject(sqlQuery, userMapper, userId);
         } else {
             throw new ObjectNotFoundException(String.format("Пользователь id=%s не найден.", userId));
         }
@@ -85,7 +85,7 @@ public class UserDbStorage implements Storage<User> {
     }
 
     @Override
-    public Optional<User> update(User updatedUser) {
+    public User update(User updatedUser) {
         if (checkIsObjectInStorage(updatedUser)) {
             String sqlQuery = "UPDATE users " +
                     "SET user_name = ?, login = ?, email = ?, birthday = ? " +
@@ -96,7 +96,7 @@ public class UserDbStorage implements Storage<User> {
                     updatedUser.getEmail(),
                     updatedUser.getBirthday(),
                     updatedUser.getId());
-            return Optional.of(updatedUser);
+            return updatedUser;
         } else {
             throw new ObjectNotFoundException(String.format("Пользователь id=%s не найден.", updatedUser.getId()));
         }
