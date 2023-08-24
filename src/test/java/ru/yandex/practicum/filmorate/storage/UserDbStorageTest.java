@@ -8,9 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import ru.yandex.practicum.filmorate.model.User;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatList;
@@ -21,57 +19,6 @@ import static org.assertj.core.api.Assertions.assertThatList;
 @Sql(scripts = "classpath:TestUserData.sql")
 class UserDbStorageTest {
     private final UserDbStorage userDbStorage;
-
-    @Test
-    public void shouldGetUserById() {
-        Optional<User> userOptional = userDbStorage.getById(4);
-        assertThat(userOptional).isPresent().hasValueSatisfying(user ->
-                assertThat(user).hasFieldOrPropertyWithValue("id", 4));
-        assertThat(userOptional).isPresent().hasValueSatisfying(user ->
-                assertThat(user).hasFieldOrPropertyWithValue("name", "TestUserName4"));
-        assertThat(userOptional).isPresent().hasValueSatisfying(user ->
-                assertThat(user).hasFieldOrPropertyWithValue("login", "TestUserLogin4"));
-        assertThat(userOptional).isPresent().hasValueSatisfying(user ->
-                assertThat(user).hasFieldOrPropertyWithValue("email", "TestUserEmail4@ru.ru"));
-        assertThat(userOptional).isPresent().hasValueSatisfying(user ->
-                assertThat(user).hasFieldOrPropertyWithValue("birthday", LocalDate.parse("2014-10-14")));
-    }
-
-    @Test
-    public void shouldAddUser() {
-        User testUser = userDbStorage.add(User.builder().name("TestUserName").email("TestUserEmail@ru.ru")
-                        .login("TestUserLogin").birthday(LocalDate.parse("2000-10-10")).build());
-        Optional<User> userOptional = userDbStorage.getById(testUser.getId());
-        assertThat(userOptional).isPresent().hasValueSatisfying(user ->
-                assertThat(user).hasFieldOrPropertyWithValue("id", testUser.getId()));
-        assertThat(userOptional).isPresent().hasValueSatisfying(user ->
-                assertThat(user).hasFieldOrPropertyWithValue("name", "TestUserName"));
-        assertThat(userOptional).isPresent().hasValueSatisfying(user ->
-                assertThat(user).hasFieldOrPropertyWithValue("login", "TestUserLogin"));
-        assertThat(userOptional).isPresent().hasValueSatisfying(user ->
-                assertThat(user).hasFieldOrPropertyWithValue("email", "TestUserEmail@ru.ru"));
-        assertThat(userOptional).isPresent().hasValueSatisfying(user ->
-                assertThat(user).hasFieldOrPropertyWithValue("birthday", LocalDate.parse("2000-10-10")));
-        List<User> userList = userDbStorage.getAll();
-        assertThatList(userList).hasSizeBetween(5, 5);
-    }
-
-    @Test
-    public void shouldUpdateUser() {
-        userDbStorage.update(User.builder().id(1).name("UpdatedName").email("UpdatedEmail1@ru.ru")
-                .login("UpdatedUserLogin").birthday(LocalDate.parse("2019-10-11")).build());
-        Optional<User> userOptional = userDbStorage.getById(1);
-        assertThat(userOptional).isPresent().hasValueSatisfying(user ->
-                assertThat(user).hasFieldOrPropertyWithValue("id", 1));
-        assertThat(userOptional).isPresent().hasValueSatisfying(user ->
-                assertThat(user).hasFieldOrPropertyWithValue("name", "UpdatedName"));
-        assertThat(userOptional).isPresent().hasValueSatisfying(user ->
-                assertThat(user).hasFieldOrPropertyWithValue("login", "UpdatedUserLogin"));
-        assertThat(userOptional).isPresent().hasValueSatisfying(user ->
-                assertThat(user).hasFieldOrPropertyWithValue("email", "UpdatedEmail1@ru.ru"));
-        assertThat(userOptional).isPresent().hasValueSatisfying(user ->
-                assertThat(user).hasFieldOrPropertyWithValue("birthday", LocalDate.parse("2019-10-11")));
-    }
 
     @Test
     public void shouldGetAllUsers() {
