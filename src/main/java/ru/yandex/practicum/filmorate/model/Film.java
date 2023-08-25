@@ -1,25 +1,24 @@
 package ru.yandex.practicum.filmorate.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.experimental.FieldDefaults;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
 
 @Data
 @AllArgsConstructor
 @Builder(toBuilder = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Film {
-    static int identificator = 0;
     int id;
     @NotBlank(message = "Не указанно название фильма")
     String name;
@@ -36,10 +35,8 @@ public class Film {
     int duration;
     int rate;
     Set<Integer> setOfLikes;
-
-    public void generateAndSetId() {
-        setId(++identificator);
-    }
+    List<Genre> genres;
+    Mpa mpa;
 
     public void generateSetOfLikes() {
         this.setOfLikes = new HashSet<>();

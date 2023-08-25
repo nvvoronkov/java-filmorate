@@ -1,28 +1,18 @@
 package ru.yandex.practicum.filmorate.controllers;
 
-import java.util.List;
-import javax.validation.Valid;
-import javax.validation.constraints.Positive;
-
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
-
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Positive;
+import java.util.List;
 
 @Validated
 @RestController
@@ -75,11 +65,5 @@ public class FilmController {
                                       int count) {
         log.info("Получен запрос на получение списка из {} фильмов с наибольшим количеством лайков", count);
         return filmService.getPopularFilms(count);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteFilm(@PathVariable("id") int filmId) {
-        log.info("Получен запрос на удаление фильма id={}", filmId);
-        filmService.deleteFilm(filmId);
     }
 }
