@@ -19,5 +19,10 @@ Template repository for Filmorate project.
 - Spring boot, Spring Boot Web,JDBC template;
 - H2 или PostgresSQL.
 
-### Запуск:
-Для запуска необходимо запустить метод Main класса FilmorateApplication.java
+## Стек
+<p>
+  <img src="https://img.shields.io/badge/Java11-red" />
+  <img src="https://img.shields.io/badge/Spring%20boot-light green" />
+  <img src="https://img.shields.io/badge/H2-blue" />
+  <img src="https://img.shields.io/badge/Lombok-orange" />
+</p>
